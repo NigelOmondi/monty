@@ -1,41 +1,34 @@
 #include "monty.h"
 
-
 /**
- * push - Pushes an element to the top of the stack.
- * @stack: Pointer to the top of the stack
- * @line_number: Line number of the opcode in the Monty file
+ * push - push element into the stack
+ * @stack: stack given by main
+ * @line_cnt: amount of lines
+ *
+ * Return: void
  */
-void push(stack_t **stack, unsigned int line_number)
+void push(stack_t **stack, unsigned int line_cnt)
 {
-	stack_t *new_node;
-	char *value_str;
-	int value;
+	char *n = global.argument;
 
-	value_str = strtok(NULL, DELIMITERS);
-	if (value_str == NULL || !is_number(value_str))
+	if ((is_digit(n)) == 0)
 	{
-		fprintf(stderr, "L%u: usage: push integer\n", line_number);
-		free_stack(*stack);
+		fprintf(stderr, "L%d: usage: push integer\n", line_cnt);
 		exit(EXIT_FAILURE);
 	}
 
-	value = atoi(value_str);
-
-	new_node = malloc(sizeof(stack_t));
-	if (new_node == NULL)
+	if (global.data_struct == 1)
 	{
-		fprintf(stderr, "Error: malloc failed\n");
-		free_stack(*stack);
-		exit(EXIT_FAILURE);
+		if (!add_node(stack, atoi(global.argument)))
+		{
+			exit(EXIT_FAILURE);
+		}
 	}
-
-	new_node->n = value;
-	new_node->prev = NULL;
-	new_node->next = *stack;
-
-	if (*stack != NULL)
-		(*stack)->prev = new_node;
-
-	*stack = new_node;
+	else
+	{
+		if (!queue_node(stack, atoi(global.argument)))
+		{
+			exit(EXIT_FAILURE);
+		}
+	}
 }
