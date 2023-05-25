@@ -1,74 +1,58 @@
 #include "monty.h"
-#include "lists.h"
 
-data_t data = DATA_INIT;
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#define _POSIX_C_SOURCE 200809L
+
+
 
 /**
- * monty - helper function for main function
- * @args: pointer to struct of arguments from main
- *
- * Description: opens and reads from the file
- * containing the opcodes, and calls the function
- * that will find the corresponding executing function
+ * main - code to test the monty program
+ * @argv: array of arguments passed to the program
+ * @argc: size of arguments(counter)
+ * Return: nothin
  */
-void monty(args_t *args)
+int main(int argc, char **argv)
 {
-	size_t len = 0;
-	int get = 0;
-	void (*code_func)(stack_t **, unsigned int);
+	int status = 0;
+	char *string = NULL;
+	stack_t *my_stack = NULL;
+	size_t bufferlen = 0;
+	FILE *file;
+	unsigned int line_no = 1;
+	char *buffer = NULL;
 
-	if (args->ac != 2)
+	globalData.mode = 1; /*stack*/
+	if (argc != 2)
+		print_error_usage();
+
+	file = fopen(argv[1], "r");
+
+	if (!file)
+		print_file_error(argv[1]);
+
+	while ((getline(&buffer, &bufferlen, file)) != (-1))
 	{
-		dprintf(STDERR_FILENO, USAGE);
-		exit(EXIT_FAILURE);
-	}
-	data.fptr = fopen(args->av, "r");
-	if (!data.fptr)
-	{
-		dprintf(STDERR_FILENO, FILE_ERROR, args->av);
-		exit(EXIT_FAILURE);
-	}
-	while (1)
-	{
-		args->line_number++;
-		get = getline(&(data.line), &len, data.fptr);
-		if (get < 0)
+		if (status)
 			break;
-		data.words = strtow(data.line);
-		if (data.words[0] == NULL || data.words[0][0] == '#')
+		if (*buffer == '\n')
 		{
-			free_all(0);
+			line_no++;
 			continue;
 		}
-		code_func = get_func(data.words);
-		if (!code_func)
+		string = strtok(buffer, " \t\n");
+		if (!string || *string == '#')
 		{
-			dprintf(STDERR_FILENO, UNKNOWN, args->line_number, data.words[0]);
-			free_all(1);
-			exit(EXIT_FAILURE);
+			line_no++;
+			continue;
 		}
-		code_func(&(data.stack), args->line_number);
-		free_all(0);
+		globalData.arg = strtok(NULL, " \t\n");
+		opcode_(&my_stack, string, line_no);
+		line_no++;
 	}
-	free_all(1);
-}
-
-/**
- * main - entry point for monty bytecode interpreter
- * @argc: number of arguments
- * @argv: array of arguments
- *
- * Return: EXIT_SUCCESS or EXIT_FAILURE
- */
-int main(int argc, char *argv[])
-{
-	args_t args;
-
-	args.av = argv[1];
-	args.ac = argc;
-	args.line_number = 0;
-
-	monty(&args);
-
-	return (EXIT_SUCCESS);
+	free(buffer);
+	stackfreeing(my_stack);
+	fclose(file);
+	exit(EXIT_SUCCESS);
 }
