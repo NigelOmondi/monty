@@ -1,38 +1,32 @@
 #include "monty.h"
 
 /**
- * f_push - add node to the stack
- * @head: stack head
- * @counter: line_number
- * Return: no return
-*/
-void f_push(stack_t **head, unsigned int counter)
+ * push_op - pushes an element on the stack
+ * @my_stack: double pointer to the stack
+ * @line_no: the line number, visibility of errors
+ * Return: void
+ */
+void push_op(stack_t **my_stack, unsigned int line_no)
 {
-	int n, j = 0, flag = 0;
+	char *f = globalData.arg;
 
-	if (bus.arg)
+	if ((is_digit(f)) == 0)
 	{
-		if (bus.arg[0] == '-')
-			j++;
-		for (; bus.arg[j] != '\0'; j++)
+		fprintf(stderr, "L%d: usage: push integer\n", line_no);
+		exit(EXIT_FAILURE);
+	}
+	if (globalData.mode == 1) /*1 for stack ,0 for queue*/
+	{
+		if (!nodeadd(my_stack, atoi(globalData.arg)))
 		{
-			if (bus.arg[j] > 57 || bus.arg[j] < 48)
-				flag = 1; }
-		if (flag == 1)
-		{ fprintf(stderr, "L%d: usage: push integer\n", counter);
-			fclose(bus.file);
-			free(bus.content);
-			free_stack(*head);
-			exit(EXIT_FAILURE); }}
+			exit(EXIT_FAILURE);
+		}
+	}
 	else
-	{ fprintf(stderr, "L%d: usage: push integer\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
-		exit(EXIT_FAILURE); }
-	n = atoi(bus.arg);
-	if (bus.lifi == 0)
-		addnode(head, n);
-	else
-		addqueue(head, n);
+	{
+		if (!enqueue_(my_stack, atoi(globalData.arg)))
+		{
+			exit(EXIT_FAILURE);
+		}
+	}
 }

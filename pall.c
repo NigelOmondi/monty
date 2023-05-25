@@ -1,22 +1,30 @@
 #include "monty.h"
 
 /**
- * f_pall - prints the stack
- * @head: stack head
- * @counter: no used
- * Return: no return
-*/
-void f_pall(stack_t **head, unsigned int counter)
+ * pall_op - prints all tha values of the stack starting from the top
+ * @my_stack: double pointer to the stack to print
+ * @line_no: line no. associated with pall in the bytecodes
+ * Return: void
+ */
+void pall_op(stack_t **my_stack, unsigned int line_no __attribute__((unused)))
 {
-	stack_t *h;
-	(void)counter;
+	stack_display(*my_stack);
+}
 
-	h = *head;
-	if (h == NULL)
-		return;
-	while (h)
+/**
+ * stack_display - displays the values of the stack
+ * @my_stack: the stack to display its values
+ * Return: size of the stack
+ */
+size_t stack_display(const stack_t *my_stack)
+{
+	size_t stack_size = 0;
+
+	while (my_stack)
 	{
-		printf("%d\n", h->n);
-		h = h->next;
+		printf("%d\n", my_stack->n);
+		my_stack = my_stack->next;
+		stack_size++;
 	}
+	return (stack_size);
 }
