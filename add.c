@@ -1,19 +1,27 @@
 #include "monty.h"
-
+#include <string.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
- * add - Adds the top two elements of the stack.
- * @stack: Pointer to the top of the stack
- * @line_number: Line number of the opcode in the Monty file
+ * _add -  adds the first two nodes of the stack
+ * @stack: stack given by main
+ * @line_cnt: line counter
+ *
+ * Return: void
  */
-void add(stack_t **stack, unsigned int line_number)
+void _add(stack_t **stack, unsigned int line_cnt)
 {
-	if (*stack == NULL || (*stack)->next == NULL)
+	int result;
+
+	if (!stack || !*stack || !((*stack)->next))
 	{
-		fprintf(stderr, "L%u: can't add, stack too short\n", line_number);
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_cnt);
 		exit(EXIT_FAILURE);
 	}
 
-	(*stack)->next->n += (*stack)->n;
-	pop(stack, line_number);
+	result = ((*stack)->next->n) + ((*stack)->n);
+	pop(stack, line_cnt); /*For top node*/
+	(*stack)->n = result;
 }
