@@ -7,83 +7,52 @@
 
 
 
-void file_error(char *argv);
-void error_usage(void);
-int status = 0;		/* global var declaration */
-
 /**
- * main - entry point
- * @argv: list of arguments passed to our program
- * @argc: amount of args
- *
- * Return: nothing
+ * main - code to test the monty program
+ * @argv: array of arguments passed to the program
+ * @argc: size of arguments(counter)
+ * Return: nothin
  */
 int main(int argc, char **argv)
 {
+	int status = 0;
+	char *string = NULL;
+	stack_t *my_stack = NULL;
+	size_t bufferlen = 0;
 	FILE *file;
-	size_t buf_len = 0;
+	unsigned int line_no = 1;
 	char *buffer = NULL;
-	char *str = NULL;
-	stack_t *stack = NULL;
-	unsigned int line_cnt = 1;
 
-	global.data_struct = 1;  /* struct defined in monty.h L58*/
+	globalData.mode = 1; /*stack*/
 	if (argc != 2)
-		error_usage(); /* def in line 82 */
+		print_error_usage();
 
 	file = fopen(argv[1], "r");
 
 	if (!file)
-		file_error(argv[1]);  /* def in line 68 */
+		print_file_error(argv[1]);
 
-	while ((getline(&buffer, &buf_len, file)) != (-1))
+	while ((getline(&buffer, &bufferlen, file)) != (-1))
 	{
 		if (status)
 			break;
 		if (*buffer == '\n')
 		{
-			line_cnt++;
+			line_no++;
 			continue;
 		}
-		str = strtok(buffer, " \t\n");
-		if (!str || *str == '#')
+		string = strtok(buffer, " \t\n");
+		if (!string || *string == '#')
 		{
-			line_cnt++;
+			line_no++;
 			continue;
 		}
-		global.argument = strtok(NULL, " \t\n");
-		opcode(&stack, str, line_cnt);
-		line_cnt++;
+		globalData.arg = strtok(NULL, " \t\n");
+		opcode_(&my_stack, string, line_no);
+		line_no++;
 	}
 	free(buffer);
-	free_stack(stack);
+	stackfreeing(my_stack);
 	fclose(file);
 	exit(EXIT_SUCCESS);
-}
-
-/**
- * file_error - prints file error message and exits
- * @argv: argv given by main()
- *
- * Desc: print msg if  not possible to open the file
- * Return: nothing
- */
-void file_error(char *argv)
-{
-	fprintf(stderr, "Error: Can't open file %s\n", argv);
-	exit(EXIT_FAILURE);
-}
-
-/**
- * error_usage - prints usage message and exits
- *
- * Desc: if user does not give any file or more than
- * one argument to your program
- *
- * Return: nothing
- */
-void error_usage(void)
-{
-	fprintf(stderr, "USAGE: monty file\n");
-	exit(EXIT_FAILURE);
 }
