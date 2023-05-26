@@ -1,30 +1,32 @@
 #include "monty.h"
 
 /**
- * push_op - pushes an element on the stack
- * @my_stack: double pointer to the stack
- * @line_no: the line number, visibility of errors
+ * push - push element into the stack
+ * @stack: stack given by main
+ * @line_cnt: amount of lines
+ *
  * Return: void
  */
-void push_op(stack_t **my_stack, unsigned int line_no)
+void push(stack_t **stack, unsigned int line_cnt)
 {
-	char *f = globalData.arg;
+	char *n = global.argument;
 
-	if ((is_digit(f)) == 0)
+	if ((is_digit(n)) == 0)
 	{
-		fprintf(stderr, "L%d: usage: push integer\n", line_no);
+		fprintf(stderr, "L%d: usage: push integer\n", line_cnt);
 		exit(EXIT_FAILURE);
 	}
-	if (globalData.mode == 1) /*1 for stack ,0 for queue*/
+
+	if (global.data_struct == 1)
 	{
-		if (!nodeadd(my_stack, atoi(globalData.arg)))
+		if (!add_node(stack, atoi(global.argument)))
 		{
 			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
-		if (!enqueue_(my_stack, atoi(globalData.arg)))
+		if (!queue_node(stack, atoi(global.argument)))
 		{
 			exit(EXIT_FAILURE);
 		}
