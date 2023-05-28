@@ -1,14 +1,13 @@
 #include "monty.h"
 
 /**
- * nop -  does nothing
- * @stack: doesnt matter
- * @line_cnt : for nothing
- *
- * Return: NOTHING
+ * nop_op - implements the nop opcode, nop doesnt do anything
+ * @my_stack: Double pointer to the stack to not do anything on
+ * @line_no: line no. associated with the nop opcode
+ * Return: void
  */
-void nop(stack_t **stack, unsigned int line_cnt)
+void nop_op(stack_t **my_stack, unsigned int line_no)
 {
-	(void) stack;
-	(void) line_cnt;
+	(void) my_stack;
+	(void) line_no;
 }
