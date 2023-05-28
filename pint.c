@@ -1,20 +1,17 @@
 #include "monty.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 
 /**
- * pint - Prints the value at the top of the stack, followed by a new line.
- * @stack: Pointer to the top of the stack
- * @line_number: Line number of the opcode in the Monty file
+ * pint_op - prints the values of the stack
+ * @my_stack: double pointer to the stack to print values for
+ * @line_no: line no. associated  with pint opcode
+ * Return: void
  */
-void pint(stack_t **stack, unsigned int line_number)
+void pint_op(stack_t **my_stack, unsigned int line_no)
 {
-	if (*stack == NULL)
+	if (my_stack == NULL || *my_stack == NULL)
 	{
-		fprintf(stderr, "L%u: can't pint, stack empty\n", line_number);
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_no);
 		exit(EXIT_FAILURE);
 	}
-
-	printf("%d\n", (*stack)->n);
+	printf("%d\n", (*my_stack)->n);
 }
