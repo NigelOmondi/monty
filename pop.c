@@ -1,30 +1,25 @@
 #include "monty.h"
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdio.h>
 
 /**
-* pop - pops the very top element of the stack
-* @stack: stack given by main in start.c
-* @line_cnt: line number for error messages
-*
-* Return: void
-*/
-void pop(stack_t **stack, unsigned int line_cnt)
+ * pop_op - removes the top element of the stack
+ * @my_stack: double pointer to the stack to remove the top element
+ * @line_no: line no associated with the pop opcode
+ * Return: void
+ */
+void pop_op(stack_t **my_stack, unsigned int line_no)
 {
-	stack_t *tmp = NULL;
+	stack_t *temp_node = NULL; /*Node to traverser*/
 
-	if (!stack || !*stack)
+	if (!my_stack || !*my_stack)
 	{
-		fprintf(stderr, "L%u: can't pop an empty stack\n", line_cnt);
+		fprintf(stderr, "L%u: can't pop an empty stack\n", line_no);
 		exit(EXIT_FAILURE);
 	}
+	temp_node = (*my_stack)->next;
+	free(*my_stack);
+	*my_stack = temp_node;
 
-	tmp = (*stack)->next;
-	free(*stack);
-	*stack = tmp;
-	if (!*stack)
-		return; /* prevents errors cause next line might assign a NULL */
-	(*stack)->prev = NULL;
+	if (!*my_stack)
+		return;
+	(*my_stack)->prev = NULL;
 }
