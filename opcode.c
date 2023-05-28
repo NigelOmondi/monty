@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "./monty.h"
 /**
  * opcode - function in charge of running builtins
  * @stack: stack given by main

@@ -1,10 +1,8 @@
-#include "monty.h"
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #define _POSIX_C_SOURCE 200809L
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "monty.h"
 
 
 /**
@@ -23,7 +21,7 @@ int main(int argc, char **argv)
 	unsigned int line_no = 1;
 	char *buffer = NULL;
 
-	globalData.mode = 1; /*stack*/
+	global.data_struct = 1; /*stack*/
 	if (argc != 2)
 		print_error_usage();
 
@@ -47,8 +45,8 @@ int main(int argc, char **argv)
 			line_no++;
 			continue;
 		}
-		globalData.arg = strtok(NULL, " \t\n");
-		opcode_(&my_stack, string, line_no);
+		global.argument = strtok(NULL, " \t\n");
+		opcode(&my_stack, string, line_no);
 		line_no++;
 	}
 	free(buffer);

@@ -3,6 +3,12 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <ctype.h>
 
 #define INSTRUCTIONS              \
 	{                           \
@@ -75,6 +81,10 @@ stack_t *add_node(stack_t **stack, const int n);
 stack_t *queue_node(stack_t **stack, const int n);
 void free_stack(stack_t *stack);
 size_t print_stack(const stack_t *stack);
+void print_error_usage(void);
+void print_file_error(char *argv);
+void opcode(stack_t **stack, char *str, unsigned int line_cnt);
+void stackfreeing(stack_t *my_stack);
 
 void push(stack_t **stack, unsigned int line_cnt);
 void pall(stack_t **stack, unsigned int line_cnt);
@@ -94,7 +104,6 @@ void pstr(stack_t **stack, unsigned int line_cnt);
 void rotl(stack_t **stack, unsigned int line_count);
 void rotr(stack_t **stack, unsigned int line_count);
 
-void opcode(stack_t **stack, char *str, unsigned int line_cnt);
 
 int is_digit(char *string);
 int isnumber(char *str);
