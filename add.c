@@ -1,27 +1,21 @@
 #include "monty.h"
-#include <string.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 /**
- * _add -  adds the first two nodes of the stack
- * @stack: stack given by main
- * @line_cnt: line counter
- *
+ * add_op - add the top two elements of the stack
+ * @my_stack: double pointer to the stack containing the two elements
+ * @line_no: line associated with the add opcode
  * Return: void
  */
-void _add(stack_t **stack, unsigned int line_cnt)
+void add_op(stack_t **my_stack, unsigned int line_no)
 {
-	int result;
+	int total_sum;
 
-	if (!stack || !*stack || !((*stack)->next))
+	if (!my_stack || !*my_stack || !((*my_stack)->next))
 	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", line_cnt);
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_no);
 		exit(EXIT_FAILURE);
 	}
-
-	result = ((*stack)->next->n) + ((*stack)->n);
-	pop(stack, line_cnt); /*For top node*/
-	(*stack)->n = result;
+	total_sum = ((*my_stack)->next->n) + ((*my_stack)->n);
+	pop_op(my_stack, line_no); /*deletes the top*/
+	(*my_stack)->n = total_sum;
 }
