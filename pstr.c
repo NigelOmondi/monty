@@ -1,24 +1,21 @@
 #include "monty.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 /**
- * pstr - prints the contents of a stack_t stack as a string
- * @stack: stack given by main
- * @line_cnt: line counter for error messages
- *
- * Return: nothing
+ * pstr_op - prints the string on top of the stack
+ * @my_stack: double pointer to print the string from
+ * @line_no: line no. associated with the opcode
+ * Return: void
  */
-void pstr(stack_t **stack, unsigned int line_cnt __attribute__((unused)))
+void pstr_op(stack_t **my_stack, unsigned int line_no __attribute__((unused)))
 {
-	stack_t *current = *stack;
+	stack_t *temp = *my_stack;
 
-	while (current)
+	while (temp)
 	{
-		if (current->n <= 0 || current->n > 127)
+		if (temp->n <= 0 || temp->n > 127)
 			break;
-		putchar((char) current->n);
-		current = current->next;
+		putchar((char) temp->n);
+		temp = temp->next;
 	}
 	putchar('\n');
 }
