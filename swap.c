@@ -1,28 +1,26 @@
 #include "monty.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+
 /**
- * swap -  swaps data from top to previous
- * @stack: stack given by main
- * @line_cnt: amount of lines
- *
+ * swap_op - swaps two elements of a stack
+ * @my_stack: double pointer containing the elements to wap
+ * @line_no: line no. associated with the swap opcode
  * Return: void
  */
-void swap(stack_t **stack, unsigned int line_cnt)
+void swap_op(stack_t **my_stack, unsigned int line_no)
 {
-	stack_t *tmp = NULL;
-	int tmp_n = 0;
+	stack_t *temp_node = NULL;
+	int data_var = 0;
 
-	if (!stack || !*stack || !((*stack)->next))
+	if (!my_stack || !*my_stack || !((*my_stack)->next))
 	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", line_cnt);
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line_no);
 		exit(EXIT_FAILURE);
 	}
-	tmp = *stack;
-	tmp_n = tmp->n;
-	tmp->n = tmp_n;
 
-	tmp->n = tmp->next->n;
-	tmp->next->n = tmp_n;
+	temp_node = *my_stack;
+	data_var = temp_node->n;
+	temp_node->n = data_var;
+
+	temp_node->n = temp_node->next->n;
+	temp_node->next->n = data_var;
 }

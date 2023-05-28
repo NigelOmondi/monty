@@ -1,28 +1,21 @@
 #include "monty.h"
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdio.h>
-
 
 /**
- * _sub -  substracts the first two nodes of the stack
- * @stack: stack given by main
- * @line_cnt: line counter
- *
+ * sub_op - subtracts two elements of the stack
+ * @my_stack: double pointer to the stack containing the 2 elements
+ * @line_no: line no. associated with the sub opcode
  * Return: void
  */
-void _sub(stack_t **stack, unsigned int line_cnt)
+void sub_op(stack_t **my_stack, unsigned int line_no)
 {
-	int result;
+	int total_sum;
 
-	if (!stack || !*stack || !((*stack)->next))
+	if (my_stack == NULL || *my_stack == NULL || (*my_stack)->next == NULL)
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short\n", line_cnt);
+		fprintf(stderr, "L%d: can't sub, stack too short\n", line_no);
 		exit(EXIT_FAILURE);
 	}
-
-	result = ((*stack)->next->n) - ((*stack)->n);
-	pop(stack, line_cnt);/*For top node*/
-	(*stack)->n = result;
+	total_sum = ((*my_stack)->next->n) - ((*my_stack)->n);
+	pop_op(my_stack, line_no); /*deleting the top most node*/
+	(*my_stack)->n = total_sum;
 }
